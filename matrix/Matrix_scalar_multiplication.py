@@ -32,3 +32,10 @@ def scalar_multiplication(scalar, matrix):
         result.append(new_row)
     
     return result
+
+#This is an example input 
+matrix = [[1, 2, 3], [4, 5, 6]]
+scalar = 2
+
+result = scalar_multiplication(scalar, matrix)
+print(result)

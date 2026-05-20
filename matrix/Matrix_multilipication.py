@@ -1,3 +1,4 @@
+
 def matrix_multiplication(A, B):
     
     # Check inputs
@@ -44,3 +45,20 @@ def matrix_multiplication(A, B):
         result.append(result_row)
     
     return result
+
+#Sample calculation 
+
+A = [[1, 2],
+     [3, 4]]
+
+B = [[5, 6],
+     [7, 8]]
+
+print(matrix_multiplication(A, B))
+
+
+
+
+
+
+
