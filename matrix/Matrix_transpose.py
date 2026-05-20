@@ -1,22 +1,225 @@
 
+"""
+Matrix transpose operation - flip matrix rows and columns.
+"""
 
-A = [[1, 2, 3],
-     [4, 5, 6]]  #2x3 matrix
+
+def transpose_matrix(matrix):
+    """Transpose a 2D matrix (swap rows and columns).
+    
+    A transpose operation transforms:
+    - Input: (height x width) matrix
+    - Output: (width x height) matrix
+    - Element at position [y][x] moves to position [x][y]
+    
+    Args:
+        matrix (list of list): Input matrix
+        
+    Returns:
+        list of list: Transposed matrix
+        
+    Example:
+        >>> matrix = [[1, 2, 3], [4, 5, 6]]
+        >>> transpose_matrix(matrix)
+        [[1, 4], [2, 5], [3, 6]]
+    """
+    if not matrix:
+        return matrix
+    
+    height = len(matrix)
+    width = len(matrix[0]) if height > 0 else 0
+    
+    if height == 0 or width == 0:
+        return matrix
+    
+    # Create transposed matrix with swapped dimensions
+    transposed = [[0 for _ in range(height)] for _ in range(width)]
+    
+    # Transpose: element [y][x] becomes [x][y]
+    for y in range(height):
+        for x in range(width):
+            transposed[x][y] = matrix[y][x]
+    
+    return transposed
 
 
-#Transpose
-rows = len(A) #The len function returns the length of something, Nmber of rows in A = 2
-cols = len(A[0]) #row 0 has 3 elements which is the Number of columns in A = 3
+def transpose_rgb_channels(red_matrix, green_matrix, blue_matrix):
+    """Transpose all three RGB channels.
+    
+    Args:
+        red_matrix (list of list): Red channel matrix
+        green_matrix (list of list): Green channel matrix
+        blue_matrix (list of list): Blue channel matrix
+        
+    Returns:
+        tuple: (transposed_red, transposed_green, transposed_blue)
+    """
+    return (
+        transpose_matrix(red_matrix),
+        transpose_matrix(green_matrix),
+        transpose_matrix(blue_matrix)
+    )
 
-#Transposed matrix will have flipped dimensions: (cols x rows) = 3x2
-transpose_result = []
 
-for j in range(cols): #Loop through each original column index
-    new_row = [] #This column becomes a new row in the transpose
-    for i in range(rows): #Loop through each original row index
-        new_row.append(A[i][j]) #Take element at row i, col j and place in new row
-    transpose_result.append(new_row) #Add the new row to the transposed matrix
+def flip_matrix_horizontal(matrix):
+    """Flip matrix horizontally (mirror left-right).
+    
+    Args:
+        matrix (list of list): Input matrix
+        
+    Returns:
+        list of list: Horizontally flipped matrix
+    """
+    if not matrix:
+        return matrix
+    
+    height = len(matrix)
+    width = len(matrix[0]) if height > 0 else 0
+    
+    if height == 0 or width == 0:
+        return matrix
+    
+    flipped = [[0 for _ in range(width)] for _ in range(height)]
+    
+    for y in range(height):
+        for x in range(width):
+            flipped[y][x] = matrix[y][width - 1 - x]
+    
+    return flipped
 
-print("\nTranspose (A^T):")
-for row in transpose_result:
-    print(row)
+
+def flip_matrix_vertical(matrix):
+    """Flip matrix vertically (mirror top-bottom).
+    
+    Args:
+        matrix (list of list): Input matrix
+        
+    Returns:
+        list of list: Vertically flipped matrix
+    """
+    if not matrix:
+        return matrix
+    
+    height = len(matrix)
+    
+    if height == 0:
+        return matrix
+    
+    flipped = [[0 for _ in range(len(matrix[0]))] for _ in range(height)]
+    
+    for y in range(height):
+        flipped[y] = matrix[height - 1 - y][:]
+    
+    return flipped
+
+
+def rotate_90_clockwise(matrix):
+    """Rotate matrix 90 degrees clockwise.
+    
+    Combines transpose and horizontal flip.
+    
+    Args:
+        matrix (list of list): Input matrix
+        
+    Returns:
+        list of list: Rotated matrix
+    """
+    # First transpose
+    transposed = transpose_matrix(matrix)
+    # Then flip horizontally
+    return flip_matrix_horizontal(transposed)
+
+
+def rotate_90_counterclockwise(matrix):
+    """Rotate matrix 90 degrees counter-clockwise.
+    
+    Combines transpose and vertical flip.
+    
+    Args:
+        matrix (list of list): Input matrix
+        
+    Returns:
+        list of list: Rotated matrix
+    """
+    # First transpose
+    transposed = transpose_matrix(matrix)
+    # Then flip vertically
+    return flip_matrix_vertical(transposed)
+
+
+def rotate_180(matrix):
+    """Rotate matrix 180 degrees.
+    
+    Args:
+        matrix (list of list): Input matrix
+        
+    Returns:
+        list of list: Rotated matrix
+    """
+    if not matrix:
+        return matrix
+    
+    height = len(matrix)
+    width = len(matrix[0]) if height > 0 else 0
+    
+    if height == 0 or width == 0:
+        return matrix
+    
+    rotated = [[0 for _ in range(width)] for _ in range(height)]
+    
+    for y in range(height):
+        for x in range(width):
+            rotated[y][x] = matrix[height - 1 - y][width - 1 - x]
+    
+    return rotated
+
+
+def transpose_rgb_image(red_matrix, green_matrix, blue_matrix):
+    """Transpose all RGB channels of an image.
+    
+    Args:
+        red_matrix (list of list): Red channel
+        green_matrix (list of list): Green channel
+        blue_matrix (list of list): Blue channel
+        
+    Returns:
+        tuple: (transposed_red, transposed_green, transposed_blue)
+    """
+    return transpose_rgb_channels(red_matrix, green_matrix, blue_matrix)
+
+
+def flip_rgb_image_horizontal(red_matrix, green_matrix, blue_matrix):
+    """Flip RGB image horizontally.
+    
+    Args:
+        red_matrix (list of list): Red channel
+        green_matrix (list of list): Green channel
+        blue_matrix (list of list): Blue channel
+        
+    Returns:
+        tuple: (flipped_red, flipped_green, flipped_blue)
+    """
+    return (
+        flip_matrix_horizontal(red_matrix),
+        flip_matrix_horizontal(green_matrix),
+        flip_matrix_horizontal(blue_matrix)
+    )
+
+
+def flip_rgb_image_vertical(red_matrix, green_matrix, blue_matrix):
+    """Flip RGB image vertically.
+    
+    Args:
+        red_matrix (list of list): Red channel
+        green_matrix (list of list): Green channel
+        blue_matrix (list of list): Blue channel
+        
+    Returns:
+        tuple: (flipped_red, flipped_green, flipped_blue)
+    """
+    return (
+        flip_matrix_vertical(red_matrix),
+        flip_matrix_vertical(green_matrix),
+        flip_matrix_vertical(blue_matrix)
+    )
+

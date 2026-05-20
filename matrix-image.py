@@ -1,6 +1,6 @@
+from PIL import Image
+import numpy as np
 def matrix_to_image(matrix_red, matrix_green, matrix_blue, ):
-    from PIL import Image
-    import numpy as np
 
     # Ensure the input matrices are numpy arrays
     matrix_red = np.array(matrix_red)
