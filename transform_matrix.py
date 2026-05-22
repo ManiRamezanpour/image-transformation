@@ -66,62 +66,6 @@ def transform_matrix(matrix, operation='double', factor=2):
     
     return transformed
 
-
-def apply_brightness(matrix, adjustment):
-    """Adjust matrix brightness.
-    
-    Args:
-        matrix (list of list): Input matrix
-        adjustment (int): Brightness adjustment (-255 to 255)
-        
-    Returns:
-        list of list: Adjusted matrix
-    """
-    height = len(matrix)
-    width = len(matrix[0]) if height > 0 else 0
-    
-    if height == 0 or width == 0:
-        return matrix
-    
-    adjusted = [[0 for _ in range(width)] for _ in range(height)]
-    
-    for y in range(height):
-        for x in range(width):
-            value = matrix[y][x] + adjustment
-            adjusted[y][x] = min(255, max(0, value))
-    
-    return adjusted
-
-
-def apply_contrast(matrix, factor):
-    """Adjust matrix contrast.
-    
-    Args:
-        matrix (list of list): Input matrix
-        factor (float): Contrast factor (1.0 = no change, > 1.0 = more contrast)
-        
-    Returns:
-        list of list: Adjusted matrix
-    """
-    height = len(matrix)
-    width = len(matrix[0]) if height > 0 else 0
-    
-    if height == 0 or width == 0:
-        return matrix
-    
-    # Calculate midpoint
-    midpoint = 128
-    
-    adjusted = [[0 for _ in range(width)] for _ in range(height)]
-    
-    for y in range(height):
-        for x in range(width):
-            value = (matrix[y][x] - midpoint) * factor + midpoint
-            adjusted[y][x] = min(255, max(0, int(value)))
-    
-    return adjusted
-
-
 def posterize_matrix(matrix, levels):
     """Reduce number of tones in matrix (posterization effect).
     

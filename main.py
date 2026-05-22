@@ -17,7 +17,6 @@ from matrix.Matrix_transpose import (
 )
 from to_grayscale import rgb_to_grayscale
 from edge_detection import sobel_edge_detection
-from transform_matrix import apply_brightness, apply_contrast
 
 
 def main():
@@ -51,8 +50,6 @@ def main():
     print("  6. Flip Vertical")
     print("  7. Grayscale")
     print("  8. Edge Detection")
-    print("  9. Brightness (+50)")
-    print(" 10. Contrast (1.5x)")
     
     choice = input("\nSelect (1-10): ").strip()
     
