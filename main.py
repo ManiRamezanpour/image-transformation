@@ -1,37 +1,24 @@
 
-"""
-IMAGE PROCESSING PIPELINE
-Starter code for image transformation project
-"""
-
 from PIL import Image
 from image_proccessing.image_to_matrix import load_image_as_rgb_matrices
 from image_proccessing.image_transformation import save_rgb_matrices_as_image
-
-# Import transformation functions
 from rotate_matrix import rotate_matrix
 from scale_matrix import scale_matrix
 from skew_matrix import skew_matrix
-from matrix.Matrix_transpose import (
-    transpose_matrix, flip_matrix_horizontal, flip_matrix_vertical
-)
-from to_grayscale import rgb_to_grayscale
+from matrix.Matrix_transpose import transpose_matrix
+from to_grayscale import rgb_to_grayscale, grayscale_image
 from edge_detection import sobel_edge_detection
 
 
 def main():
     import os
-    
-    # Create output directory
     os.makedirs("output", exist_ok=True)
     
-    # TODO: Load the image using Image.open.
     image_path = input("\nEnter image path: ").strip()
     if not image_path:
         print("✗ No image provided")
         return
     
-    # TODO: Convert the image to a matrix.
     print("Loading image...")
     try:
         red, green, blue, height, width = load_image_as_rgb_matrices(image_path)
@@ -40,20 +27,16 @@ def main():
         print(f"✗ Error: {e}")
         return
     
-    # TODO: Ask the user for the type of transformation and corresponding parameters.
     print("\nTransformations:")
     print("  1. Rotation (45°)")
     print("  2. Scaling (0.75x)")
     print("  3. Skewing (20°)")
     print("  4. Transpose")
-    print("  5. Flip Horizontal")
-    print("  6. Flip Vertical")
-    print("  7. Grayscale")
-    print("  8. Edge Detection")
+    print("  5. Grayscale")
+    print("  6. Edge Detection")
     
-    choice = input("\nSelect (1-10): ").strip()
+    choice = input("\nSelect (1-6): ").strip()
     
-    # TODO: Call the appropriate transformation function.
     if choice == "1":
         red = rotate_matrix(red, 45)
         green = rotate_matrix(green, 45)
@@ -79,25 +62,17 @@ def main():
         print("✓ Transposed")
     
     elif choice == "5":
-        red = flip_matrix_horizontal(red)
-        green = flip_matrix_horizontal(green)
-        blue = flip_matrix_horizontal(blue)
-        print("✓ Flipped horizontal")
+        gray_img = grayscale_image(red, green, blue)
+        output_name = input("\nOutput filename [grayscale.png]: ").strip()
+        if not output_name:
+            output_name = "grayscale.png"
+        output_path = f"output/{output_name}"
+        gray_img.save(output_path)
+        print(f"✓ Saved grayscale to: {output_path}")
+        gray_img.show()
+        return
     
     elif choice == "6":
-        red = flip_matrix_vertical(red)
-        green = flip_matrix_vertical(green)
-        blue = flip_matrix_vertical(blue)
-        print("✓ Flipped vertical")
-    
-    elif choice == "7":
-        gray = rgb_to_grayscale(red, green, blue)
-        red = gray
-        green = gray
-        blue = gray
-        print("✓ Converted to grayscale")
-    
-    elif choice == "8":
         gray = rgb_to_grayscale(red, green, blue)
         edges = sobel_edge_detection(gray)
         red = edges
@@ -105,26 +80,10 @@ def main():
         blue = edges
         print("✓ Edge detection applied")
     
-    elif choice == "9":
-        red = apply_brightness(red, 50)
-        green = apply_brightness(green, 50)
-        blue = apply_brightness(blue, 50)
-        print("✓ Brightness +50")
-    
-    elif choice == "10":
-        red = apply_contrast(red, 1.5)
-        green = apply_contrast(green, 1.5)
-        blue = apply_contrast(blue, 1.5)
-        print("✓ Contrast 1.5x")
-    
     else:
         print("✗ Invalid choice")
         return
     
-    # TODO: Convert the matrix back to an image.
-    # (Image.new is used inside save_rgb_matrices_as_image)
-    
-    # TODO: Save the output image.
     output_name = input("\nOutput filename [output.png]: ").strip()
     if not output_name:
         output_name = "output.png"

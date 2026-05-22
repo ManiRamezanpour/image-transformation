@@ -1,5 +1,9 @@
 # Convert RGB to grayscale
 
+from PIL import Image
+import os
+
+
 def rgb_to_grayscale_luminosity(red, green, blue):
     # Weights based on human eye sensitivity
     height = len(red)
@@ -73,3 +77,27 @@ def rgb_to_grayscale(red, green, blue, method='luminosity'):
 # Shorthand for common use
 def to_grayscale(r, g, b):
     return rgb_to_grayscale_luminosity(r, g, b)
+
+
+def grayscale_image(red, green, blue, save_path=None):
+    # Convert RGB matrices to grayscale and return as PIL Image
+    # Can display with image.show() or save to file
+    gray_matrix = rgb_to_grayscale_luminosity(red, green, blue)
+    height = len(gray_matrix)
+    width = len(gray_matrix[0])
+    
+    # Create grayscale image
+    img = Image.new('L', (width, height))
+    pixels = img.load()
+    
+    for y in range(height):
+        for x in range(width):
+            val = int(min(255, max(0, gray_matrix[y][x])))
+            pixels[x, y] = val
+    
+    if save_path:
+        os.makedirs(os.path.dirname(save_path) if os.path.dirname(save_path) else '.', exist_ok=True)
+        img.save(save_path)
+        print(f"Saved grayscale image to: {save_path}")
+    
+    return img
